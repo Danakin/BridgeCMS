@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -102,6 +103,18 @@ class PostTest extends TestCase
         } finally {
             $this->assertDatabaseMissing('posts', ['id' => 2]);
         }
+    }
+
+    public function test_a_post_can_belong_to_a_user()
+    {
+        $user = User::factory()->create();
+        $user->posts()->create(Post::factory()->make()->toArray());
+
+        $post = Post::find(1);
+
+        $this->assertDatabaseHas('posts', ['id' => 1, 'user_id' => 1]);
+        $this->assertNotNull($post->user);
+        $this->assertNotNull($user->posts);
     }
 
 
