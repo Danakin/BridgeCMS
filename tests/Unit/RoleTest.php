@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Models\Role;
 use App\Models\User;
+use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,7 +14,6 @@ class RoleTest extends TestCase
 
     public function test_a_role_can_be_created()
     {
-        $this->withoutExceptionHandling();
         $role = Role::factory()->create();
 
         $this->assertDatabaseHas('roles', ['id' => $role->id]);
@@ -34,7 +34,7 @@ class RoleTest extends TestCase
         try {
             $role1 = Role::factory()->create(['title' => 'admin']);
             $role2 = Role::factory()->create(['title' => 'admin']);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         } finally {
             $this->assertNotNull($role1);
             $this->assertNull($role2);

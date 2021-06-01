@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Models\Post;
 use App\Models\User;
+use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -75,7 +76,7 @@ class PostTest extends TestCase
         $post = null;
         try {
             $post = Post::factory()->create(['title' => null]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         } finally {
             $this->assertNull($post);
         }
@@ -86,7 +87,7 @@ class PostTest extends TestCase
         $post = null;
         try {
             $post = Post::factory()->create(['description' => null]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         } finally {
             $this->assertNull($post);
         }
@@ -99,7 +100,7 @@ class PostTest extends TestCase
         try {
             $post1 = Post::factory()->create(['slug' => 'slug']);
             $post2 = Post::factory()->create(['slug' => 'slug']);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         } finally {
             $this->assertNotNull($post1);
             $this->assertNull($post2);
@@ -112,7 +113,7 @@ class PostTest extends TestCase
         $user = User::factory()->create();
         $post = $user->posts()->create(Post::factory()->make()->toArray());
 
-        $this->assertDatabaseHas('posts', ['id' => $post->id, 'user_id' => 1]);
+        $this->assertDatabaseHas('posts', ['id' => $post->id, 'user_id' => $user->id]);
         $this->assertNotNull($post->user);
         $this->assertNotNull($user->posts);
     }
