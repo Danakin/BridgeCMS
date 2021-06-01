@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Page;
 use App\Models\Post;
 use App\Models\User;
 use Exception;
@@ -71,7 +72,7 @@ class PostTest extends TestCase
         );
     }
 
-    public function test_a_title_can_not_be_null()
+    public function test_a_title_cannot_be_null()
     {
         $post = null;
         try {
@@ -82,7 +83,7 @@ class PostTest extends TestCase
         }
     }
 
-    public function test_a_description_can_not_be_null()
+    public function test_a_description_cannot_be_null()
     {
         $post = null;
         try {
@@ -116,7 +117,65 @@ class PostTest extends TestCase
         $this->assertDatabaseHas('posts', ['id' => $post->id, 'user_id' => $user->id]);
         $this->assertNotNull($post->user);
         $this->assertNotNull($user->posts);
+        $this->assertCount(1, $user->posts);
     }
 
+    public function test_a_user_can_have_many_posts()
+    {
+        $user = User::factory()->create();
+        $post1 = $user->posts()->create(Post::factory()->make()->toArray());
+        $post2 = $user->posts()->create(Post::factory()->make()->toArray());
 
+        $this->assertDatabaseHas('posts', ['id' => $post1->id, 'user_id' => $user->id]);
+        $this->assertDatabaseHas('posts', ['id' => $post2->id, 'user_id' => $user->id]);
+        $this->assertNotNull($post1->user);
+        $this->assertNotNull($post2->user);
+        $this->assertNotNull($user->posts);
+        $this->assertCount(2, $user->posts);
+    }
+
+    public function test_a_user_id_can_be_null()
+    {
+        $post = Post::factory()->create(["user_id" => null]);
+        $this->assertNotNull($post);
+        $this->assertDatabaseHas('posts', ["id" => $post->id]);
+        $this->assertNull($post->user_id);
+    }
+
+    public function test_a_post_can_belong_to_a_page()
+    {
+        $page = Page::factory()->create();
+        $post = $page->posts()->create(Post::factory()->make()->toArray());
+
+        $this->assertDatabaseHas('posts', ['id' => $post->id]);
+        $this->assertDatabaseHas('pages', ['id' => $page->id]);
+        $this->assertDatabaseHas('posts', ['page_id' => $post->page_id]);
+        $this->assertNotNull($post->page);
+        $this->assertNotNull($page->posts);
+        $this->assertCount(1, $page->posts);
+    }
+
+    public function test_a_page_can_have_multiple_posts()
+    {
+        $page = Page::factory()->create();
+        $post1 = $page->posts()->create(Post::factory()->make()->toArray());
+        $post2 = $page->posts()->create(Post::factory()->make()->toArray());
+
+        $this->assertDatabaseHas('posts', ['id' => $post1->id]);
+        $this->assertDatabaseHas('posts', ['id' => $post2->id]);
+        $this->assertDatabaseHas('pages', ['id' => $page->id]);
+        $this->assertDatabaseHas('posts', ['page_id' => $post1->page_id]);
+        $this->assertDatabaseHas('posts', ['page_id' => $post2->page_id]);
+        $this->assertNotNull($post1->page);
+        $this->assertNotNull($page->posts);
+        $this->assertCount(2, $page->posts);
+    }
+
+    public function test_a_page_id_can_be_null()
+    {
+        $post = Post::factory()->create(["page_id" => null]);
+        $this->assertNotNull($post);
+        $this->assertDatabaseHas('posts', ["id" => $post->id]);
+        $this->assertNull($post->page_id);
+    }
 }

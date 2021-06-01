@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Page extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'page_id',
         'title',
         'slug',
         'description',
@@ -23,8 +21,8 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function page()
+    public function posts()
     {
-        return $this->belongsTo(Page::class);
+        return $this->hasMany(Post::class);
     }
 }

@@ -65,6 +65,11 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    public function pages()
+    {
+        return $this->hasMany(Page::class);
+    }
+
     public function roles()
     {
         return $this->belongsToMany(Role::class);
