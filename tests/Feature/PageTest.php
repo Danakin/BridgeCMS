@@ -18,7 +18,7 @@ class PageTest extends TestCase
 
         $response = $this->get(route('pages.show', $page));
         $response->assertStatus(200);
-        $response->assertSee($page->title);
+        $response->assertSee(ucwords($page->title));
         foreach ($page->posts as $post) {
             $response->assertSee($post->title);
         }
