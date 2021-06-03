@@ -30,6 +30,8 @@ class Page extends Model
         'title',
         'slug',
         'description',
+        'can_have_posts',
+        'content',
     ];
 
     public function user()

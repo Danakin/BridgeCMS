@@ -16,7 +16,7 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        $pages = Page::all();
+        $pages = Page::where('can_have_posts', TRUE)->get();
         $users = User::all();
         for ($i = 0; $i < 1000; $i++) {
             Post::factory()->create(

@@ -27,6 +27,8 @@ class PageFactory extends Factory
             "title" => $title,
             "slug" => Str::slug($title),
             "description" => $this->faker->sentences(3, true),
+            "can_have_posts" => $this->faker->boolean(),
+            "content" => $this->faker->paragraphs(3, true),
         ];
     }
 }

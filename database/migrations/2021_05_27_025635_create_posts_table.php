@@ -18,7 +18,7 @@ class CreatePostsTable extends Migration
             $table->foreignId('user_id')->nullable();
             $table->foreignId('page_id')->nullable();
             $table->string('title');
-            $table->string('slug')->nullable()->unique()->index();
+            $table->string('slug')->unique()->index();
             $table->text('description');
             $table->boolean('published')->default(FALSE);
             $table->timestamp('published_at')->nullable();

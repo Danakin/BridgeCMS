@@ -16,9 +16,11 @@ class CreatePagesTable extends Migration
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable();
-            $table->string("title")->nullable()->unique();
-            $table->string("slug")->nullable()->unique()->index();
+            $table->string("title")->unique();
+            $table->string("slug")->unique()->index();
+            $table->string("can_have_posts")->default(TRUE);
             $table->text("description");
+            $table->text("content")->nullable();
             $table->timestamps();
         });
     }

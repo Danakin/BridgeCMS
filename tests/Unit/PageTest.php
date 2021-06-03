@@ -53,10 +53,16 @@ class PageTest extends TestCase
         $this->assertDatabaseHas('pages', ["slug" => $slug]);
     }
 
-    public function test_a_title_can_be_null()
+    public function test_a_title_cannot_be_null()
     {
-        $page = Page::factory()->create(["title" => null]);
-        $this->assertDatabaseHas('pages', ["title" => null]);
+        $page = null;
+        try {
+            $page = Page::factory()->create(["title" => null]);
+        } catch (\Exception $e) {
+        } finally {
+            $this->assertNull($page);
+            $this->assertDatabaseMissing('pages', ["title" => null]);
+        }
     }
 
     public function test_a_description_cannot_be_null()
@@ -71,17 +77,17 @@ class PageTest extends TestCase
         }
     }
 
-    public function test_a_slug_can_be_null()
+    public function test_a_slug_cannot_be_null()
     {
         $page = null;
 
-        $page = Page::factory()->create(["slug" => null]);
-        $this->assertDatabaseHas(
-            'pages',
-            [
-                "slug" => null,
-            ]
-        );
+        try {
+            $page = Page::factory()->create(["slug" => null]);
+        } catch (\Exception $e) {
+        } finally {
+            $this->assertNull($page);
+            $this->assertDatabaseMissing('pages', ["slug" => null]);
+        }
     }
 
     public function test_a_title_must_be_unique()
@@ -90,7 +96,7 @@ class PageTest extends TestCase
         $page2 = null;
         try {
             $page2 = Page::factory()->create(["title" => $page1->title]);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
         } finally {
             $this->assertDatabaseHas('pages', ["title" => $page1->title]);
             $this->assertDatabaseHas('pages', ["id" => $page1->id]);
@@ -105,7 +111,7 @@ class PageTest extends TestCase
         $page2 = null;
         try {
             $page2 = Page::factory()->create(["slug" => $page1->slug]);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
         } finally {
             $this->assertDatabaseHas('pages', ["slug" => $page1->slug]);
             $this->assertDatabaseHas('pages', ["id" => $page1->id]);
@@ -209,5 +215,26 @@ class PageTest extends TestCase
         $this->assertDatabaseMissing('permissions', ['title' => 'create-page-' . $pageName]);
         $this->assertDatabaseMissing('permissions', ['title' => 'update-page-' . $pageName]);
         $this->assertDatabaseMissing('permissions', ['title' => 'delete-page-' . $pageName]);
+    }
+
+    public function test_can_have_post_field_can_be_set()
+    {
+        $page1 = Page::factory()->create(["can_have_posts" => false]);
+        $page2 = Page::factory()->create(["can_have_posts" => true]);
+
+        $this->assertDatabaseHas('pages', ["id" => $page1->id, "can_have_posts" => false]);
+        $this->assertDatabaseHas('pages', ["id" => $page2->id, "can_have_posts" => true]);
+    }
+
+    public function test_the_content_field_can_be_null()
+    {
+        $page = Page::factory()->create(["content" => null]);
+        $this->assertDatabaseHas('pages', ["id" => $page->id, "content" => null]);
+    }
+
+    public function test_the_content_field_can_be_set()
+    {
+        $page = Page::factory()->create(["content" => "fixed content"]);
+        $this->assertDatabaseHas('pages', ["id" => $page->id, "content" => "fixed content"]);
     }
 }
