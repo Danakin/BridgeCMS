@@ -150,7 +150,8 @@ class PageTest extends TestCase
 
     public function test_creating_a_page_creates_permissions()
     {
-        $page = Page::factory()->create(['title' => 'permission']);
+        $pageTitle = 'permission';
+        $page = Page::factory()->create(['title' => $pageTitle]);
         $role = Role::factory()->create(['title' => 'PageEditor']);
         $page->roles()->sync($role->id);
         $this->assertDatabaseHas('page_role', ['page_id' => $page->id, 'role_id' => $role->id]);
@@ -161,9 +162,9 @@ class PageTest extends TestCase
         $role->permissions()->sync($permissions);
         $role->permissions()->attach($random_permission->id);
         $this->assertCount(4, $role->permissions);
-        $this->assertDatabaseHas('permissions', ['title' => 'create-permission']);
-        $this->assertDatabaseHas('permissions', ['title' => 'update-permission']);
-        $this->assertDatabaseHas('permissions', ['title' => 'delete-permission']);
+        $this->assertDatabaseHas('permissions', ['title' => 'create-page-' . $pageTitle]);
+        $this->assertDatabaseHas('permissions', ['title' => 'update-page-' . $pageTitle]);
+        $this->assertDatabaseHas('permissions', ['title' => 'delete-page-' . $pageTitle]);
 
         $this->assertCount(3, $page->permissions);
     }
@@ -176,18 +177,18 @@ class PageTest extends TestCase
         $page->roles()->sync($role->id);
         $permissions = Permission::where('title', 'like', '%' . $page->title)->pluck('id')->toArray();
         $role->permissions()->sync($permissions);
-        $this->assertDatabaseHas('permissions', ['title' => 'create-' . $pageName]);
-        $this->assertDatabaseHas('permissions', ['title' => 'update-' . $pageName]);
-        $this->assertDatabaseHas('permissions', ['title' => 'delete-' . $pageName]);
+        $this->assertDatabaseHas('permissions', ['title' => 'create-page-' . $pageName]);
+        $this->assertDatabaseHas('permissions', ['title' => 'update-page-' . $pageName]);
+        $this->assertDatabaseHas('permissions', ['title' => 'delete-page-' . $pageName]);
         $this->assertCount(3, $page->permissions);
 
         $newPageName = 'newTitle';
         $page->title = $newPageName;
         $page->save();
         $this->assertDatabaseHas('pages', ['title' => $newPageName]);
-        $this->assertDatabaseHas('permissions', ['title' => 'create-' . $newPageName]);
-        $this->assertDatabaseHas('permissions', ['title' => 'update-' . $newPageName]);
-        $this->assertDatabaseHas('permissions', ['title' => 'delete-' . $newPageName]);
+        $this->assertDatabaseHas('permissions', ['title' => 'create-page-' . $newPageName]);
+        $this->assertDatabaseHas('permissions', ['title' => 'update-page-' . $newPageName]);
+        $this->assertDatabaseHas('permissions', ['title' => 'delete-page-' . $newPageName]);
     }
 
     public function test_deleting_a_page_also_deletes_permissions()
@@ -198,15 +199,15 @@ class PageTest extends TestCase
         $page->roles()->sync($role->id);
         $permissions = Permission::where('title', 'like', '%' . $page->title)->pluck('id')->toArray();
         $role->permissions()->sync($permissions);
-        $this->assertDatabaseHas('permissions', ['title' => 'create-' . $pageName]);
-        $this->assertDatabaseHas('permissions', ['title' => 'update-' . $pageName]);
-        $this->assertDatabaseHas('permissions', ['title' => 'delete-' . $pageName]);
+        $this->assertDatabaseHas('permissions', ['title' => 'create-page-' . $pageName]);
+        $this->assertDatabaseHas('permissions', ['title' => 'update-page-' . $pageName]);
+        $this->assertDatabaseHas('permissions', ['title' => 'delete-page-' . $pageName]);
         $this->assertCount(3, $page->permissions);
 
         $page->delete();
         $this->assertDatabaseMissing('pages', ['title' => $pageName]);
-        $this->assertDatabaseMissing('permissions', ['title' => 'create-' . $pageName]);
-        $this->assertDatabaseMissing('permissions', ['title' => 'update-' . $pageName]);
-        $this->assertDatabaseMissing('permissions', ['title' => 'delete-' . $pageName]);
+        $this->assertDatabaseMissing('permissions', ['title' => 'create-page-' . $pageName]);
+        $this->assertDatabaseMissing('permissions', ['title' => 'update-page-' . $pageName]);
+        $this->assertDatabaseMissing('permissions', ['title' => 'delete-page-' . $pageName]);
     }
 }
