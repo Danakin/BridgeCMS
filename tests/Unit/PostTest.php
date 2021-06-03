@@ -178,4 +178,45 @@ class PostTest extends TestCase
         $this->assertDatabaseHas('posts', ["id" => $post->id]);
         $this->assertNull($post->page_id);
     }
+
+    public function test_a_post_can_have_a_published_at_date ()
+    {
+        $post = Post::factory()->create(["published_at" => now()]);
+
+        $this->assertNotNull($post);
+        $this->assertDatabaseHas('posts', ["published_at" => $post->published_at]);
+    }
+
+    public function test_a_published_at_date_can_be_null ()
+    {
+        $post = Post::factory()->create(["published_at" => null]);
+
+        $this->assertNotNull($post);
+        $this->assertDatabaseHas('posts', ["id" => $post->id]);
+        $this->assertNull($post->published_at);
+    }
+
+    public function test_a_published_at_date_can_be_in_the_past ()
+    {
+        $post = Post::factory()->create(["published_at" => now()->subYear()]);
+
+        $this->assertNotNull($post);
+        $this->assertDatabaseHas('posts', ["published_at" => $post->published_at]);
+    }
+
+    public function test_a_published_at_date_can_be_in_the_future ()
+    {
+        $post = Post::factory()->create(["published_at" => now()->addYear()]);
+
+        $this->assertNotNull($post);
+        $this->assertDatabaseHas('posts', ["published_at" => $post->published_at]);
+    }
+
+    public function test_a_post_can_set_a_published_attribute()
+    {
+        $post = Post::factory()->create(["published" => TRUE]);
+
+        $this->assertNotNull($post);
+        $this->assertDatabaseHas('posts', ['published' => TRUE]);
+    }
 }

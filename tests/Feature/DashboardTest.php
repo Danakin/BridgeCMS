@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin;
+namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -30,4 +30,5 @@ class DashboardTest extends TestCase
         $response->assertSee('Dashboard');
         $response->assertStatus(200);
     }
+
 }

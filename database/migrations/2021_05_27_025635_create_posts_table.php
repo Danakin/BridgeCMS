@@ -20,6 +20,8 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->string('slug')->nullable()->unique()->index();
             $table->text('description');
+            $table->boolean('published')->default(FALSE);
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
         });
     }
