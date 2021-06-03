@@ -22,7 +22,7 @@ class PostFactory extends Factory
      */
     public function definition()
     {
-        $title = $this->faker->words(rand(1, 7), true);
+        $title = $this->faker->words(rand(3, 7), true);
         return [
             'title' => $title,
             'description' => $this->faker->sentences(3, true),
