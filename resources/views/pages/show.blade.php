@@ -7,11 +7,10 @@
         {{ $page->content }}
     </section>
 
-    <section class="mt-4 divide-y">
+    <section class="mt-4">
     @foreach($posts as $post)
-        <article class="my-2">
-            <a href="{{ route('pages.posts.show', [$page, $post]) }}">{{ $post->title }}</a>
-        </article>
+        <x-post.block :page="$page" :post="$post">
+        </x-post.block>
     @endforeach
     {{ $posts->links() }}
 
