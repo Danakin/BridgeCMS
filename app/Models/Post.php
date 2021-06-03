@@ -5,19 +5,20 @@ namespace App\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * App\Models\Post
  *
- * @property int $id
- * @property int|null $user_id
- * @property string $title
- * @property string|null $slug
- * @property string $description
+ * @property int                             $id
+ * @property int|null                        $user_id
+ * @property string                          $title
+ * @property string|null                     $slug
+ * @property string                          $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Page $page
- * @property-read User|null $user
+ * @property-read \App\Models\Page           $page
+ * @property-read User|null                  $user
  * @method static \Database\Factories\PostFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Post newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Post newQuery()
@@ -57,5 +58,10 @@ class Post extends Model
     public function page()
     {
         return $this->belongsTo(Page::class);
+    }
+
+    public function getShortDescriptionAttribute()
+    {
+        return Str::limit($this->description, 250, ' <a href="' . route('pages.posts.show', [$this->page, $this]) . '">[... ' . __("Read More") . ']</a>');
     }
 }

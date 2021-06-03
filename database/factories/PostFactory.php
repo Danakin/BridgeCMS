@@ -48,7 +48,7 @@ class PostFactory extends Factory
 
         return [
             'title' => $title,
-            'description' => $this->faker->sentences(3, true),
+            'description' => $this->faker->paragraphs(rand(1,10), true),
             'slug' => Str::slug($title),
             'published_at' => $publishedAt,
             'published' => rand(0,1),
