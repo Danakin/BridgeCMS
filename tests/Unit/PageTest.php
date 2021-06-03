@@ -53,16 +53,10 @@ class PageTest extends TestCase
         $this->assertDatabaseHas('pages', ["slug" => $slug]);
     }
 
-    public function test_a_title_cannot_be_null()
+    public function test_a_title_can_be_null()
     {
-        $page = null;
-
-        try {
-            $page = Page::factory()->create(["title" => null]);
-        } catch (\Exception $e) {
-        } finally {
-            $this->assertNull($page);
-        }
+        $page = Page::factory()->create(["title" => null]);
+        $this->assertDatabaseHas('pages', ["title" => null]);
     }
 
     public function test_a_description_cannot_be_null()
@@ -88,6 +82,21 @@ class PageTest extends TestCase
                 "slug" => null,
             ]
         );
+    }
+
+    public function test_a_title_must_be_unique()
+    {
+        $page1 = Page::factory()->create();
+        $page2 = null;
+        try {
+            $page2 = Page::factory()->create(["title" => $page1->title]);
+        } catch(\Exception $e){
+        } finally {
+            $this->assertDatabaseHas('pages', ["title" => $page1->title]);
+            $this->assertDatabaseHas('pages', ["id" => $page1->id]);
+            $this->assertCount(1, Page::where("title", $page1->title)->get());
+            $this->assertNull($page2);
+        }
     }
 
     public function test_a_slug_must_be_unique()
