@@ -28,5 +28,8 @@ class DashboardTest extends TestCase
         $this->actingAs(User::factory()->has(Role::factory()->count(1))->create());
         $response = $this->get(route('admin.dashboard'));
         $response->assertStatus(200);
+        $response->assertSee('Admin Panel');
+        $response->assertSee(__('Logout'));
+        $response->assertSee(__('Dashboard'));
     }
 }

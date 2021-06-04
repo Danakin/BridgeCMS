@@ -18,7 +18,7 @@ Route::get(
     function () {
         return view('welcome');
     }
-);
+)->name('welcome');
 
 Route::middleware(['auth:sanctum', 'verified'])->get(
     '/dashboard',
@@ -29,9 +29,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get(
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'can:access-admin'], function() {
     Route::get('/', function() { return redirect()->route('admin.dashboard'); });
-    Route::get('/dashboard', function() {
-        echo 'DASHBOARD';
-    })->name('dashboard');
+    Route::view('/dashboard', 'admin.dashboard')->name('dashboard');
 });
 
 Route::get('/{page:slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');
