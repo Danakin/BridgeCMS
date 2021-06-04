@@ -27,7 +27,13 @@ Route::middleware(['auth:sanctum', 'verified'])->get(
     }
 )->name('dashboard');
 
-Route::get("/{page:slug}", [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');
-Route::get("/{page:slug}/{post:slug}", [\App\Http\Controllers\PostController::class, 'show'])->name(
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'can:access-admin'], function() {
+    Route::get('/dashboard', function() {
+        echo 'DASHBOARD';
+    })->name('dashboard');
+});
+
+Route::get('/{page:slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');
+Route::get('/{page:slug}/{post:slug}', [\App\Http\Controllers\PostController::class, 'show'])->name(
     'pages.posts.show'
 );
