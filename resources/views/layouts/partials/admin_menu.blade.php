@@ -8,7 +8,7 @@
         <article class="text-center py-2">{{ auth()->user()->email }}</article>
         <form action="{{ route('logout') }}" method="POST">
             @csrf
-            <button class="py-2 w-full hover:bg-green-700">{{__('Logout')}}</button>
+            <button class="py-2 w-full hover:bg-gray-700">{{__('Logout')}}</button>
         </form>
     </section>
 </nav>

@@ -18,7 +18,7 @@
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased bg-coolGray-100">
         @include('layouts.partials.menu')
         <main class="ml-64 p-4">
             @yield('content')

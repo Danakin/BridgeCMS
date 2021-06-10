@@ -1,4 +1,4 @@
-<article class="my-2 p-4 border border-green-100">
+<article class="my-2 p-4 border shadow-sm">
     <h2 class="text-xl font-bold mb-4">
         <a href="{{ route('pages.posts.show', [$page, $post]) }}">{{ $post->title }}</a>
     </h2>
