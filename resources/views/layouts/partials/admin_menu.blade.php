@@ -2,6 +2,7 @@
     <ul>
         <li class="text-2xl font-bold text-center border-b-2 border-white mt-4">Admin Panel</li>
         <x-menu.admin.item route="{{ route('welcome') }}" title="Back To Homepage" class="mt-4 border-t-2 border-b-2 border-gray-700"></x-menu.admin.item>
+        <x-menu.admin.item route="{{ route('admin.menus.index') }}" title="{{ __('Menus') }}"></x-menu.admin.item>
     </ul>
 
     <section class="d-flex flex-col border-t-2 border-white">
