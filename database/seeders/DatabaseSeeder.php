@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
                 PageSeeder::class,
                 PostSeeder::class,
                 RoleSeeder::class,
+                MenuSeeder::class,
+                MenuItemSeeder::class,
             ]
         );
     }
