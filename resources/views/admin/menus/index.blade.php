@@ -38,7 +38,7 @@
             <article class="w-2/12 px-2 py-1">Options</article>
         </section>
     @forelse($menus as $menu)
-        <section class="flex w-full divide-x-2 my-2">
+        <section x-data="{ title: '{{ $menu->title }}' }" class="flex w-full divide-x-2 my-2">
             <article class="w-2/12 px-2 py-1">{{ $menu->title }}</article>
             <article class="w-8/12 px-2 py-1">{{ $menu->short_description }}</article>
             <article class="w-2/12 px-2 py-1 flex">
@@ -49,7 +49,38 @@
                     <a href="{{ route('admin.menus.edit', $menu) }}" class="w-full flex items-center justify-center text-xs py-2 rounded text-white text-center bg-green-500">Edit</a>
                 </div>
                 <div class="mx-2 w-1/3">
-                    <a href="{{ route('admin.menus.destroy', $menu) }}" class="w-full flex items-center justify-center text-xs py-2 rounded text-white text-center bg-red-500">Delete</a>
+                    <a
+                        x-on:click="
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: 'Delete item? ' + title,
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, delete it!'
+                            })
+                            .then(async (result) => {
+                                if (result.isConfirmed) {
+                                    return await axios.delete('{{ route('admin.menus.destroy', $menu) }}');
+                                }
+                                return {};
+                            })
+                            .then(result => {
+                                if(result.status === 200 && result.data.success === true) {
+                                    window.location.reload()
+                                }
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                Swal.fire({
+                                    title: 'Uhoh!?',
+                                    text: 'Something went wrong! We could not delete {{ $menu->title }}',
+                                    icon: 'error'
+                                })
+                            })
+                        "
+                        class="w-full flex items-center justify-center text-xs py-2 rounded text-white text-center bg-red-500">Delete</a>
                 </div>
             </article>
         </section>

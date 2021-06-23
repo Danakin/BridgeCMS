@@ -30,6 +30,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get(
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'can:access-admin'], function() {
     Route::get('/', function() { return redirect()->route('admin.dashboard'); });
     Route::view('/dashboard', 'admin.dashboard')->name('dashboard');
+    Route::resource('menus', \App\Http\Controllers\MenuController::class);
+    Route::resource('menus.items', \App\Http\Controllers\MenuItemController::class);
 });
 
 Route::get('/{page:slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');

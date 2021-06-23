@@ -6,6 +6,7 @@ use App\Http\Requests\Menu\MenuStoreRequest;
 use App\Http\Requests\Menu\MenuUpdateRequest;
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class MenuController extends Controller
 {
@@ -36,5 +37,15 @@ class MenuController extends Controller
         $menu->update($request->validated());
 
         return redirect()->route('admin.menus.index')->with('success', "Menu {$menu->title} has been updated.");
+    }
+
+    public function destroy(Menu $menu) {
+        $menuDeleted = $menu->delete();
+        if(!$menuDeleted) {
+            return response()->json(['success' => FALSE], 300);
+        }
+
+        Session::flash('success', 'Menu ' . $menu->title . ' has been deleted.');
+        return response()->json(['success' => TRUE], 200);
     }
 }
