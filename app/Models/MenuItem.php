@@ -26,4 +26,19 @@ class MenuItem extends Model
     {
         return $this->belongsToMany(Menu::class, 'menu_menu_item');
     }
+
+    public function menu_items()
+    {
+        return $this->hasMany(MenuItem::class);
+    }
+
+    public function scopeTopLevelItems($query)
+    {
+        return $query->whereNull('menu_item_id')->get();
+    }
+
+    public function scopeChildItems($query, $id)
+    {
+        return $query->where('menu_item_id', $id)->get();
+    }
 }

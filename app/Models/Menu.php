@@ -24,4 +24,9 @@ class Menu extends Model
     {
         return $this->belongsToMany(MenuItem::class, 'menu_menu_item');
     }
+
+    public function topLevelMenuItems()
+    {
+        return $this->belongsToMany(MenuItem::class, 'menu_menu_item')->whereNull('menu_items.menu_item_id');
+    }
 }

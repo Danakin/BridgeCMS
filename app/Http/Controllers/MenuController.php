@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Menu\MenuStoreRequest;
 use App\Http\Requests\Menu\MenuUpdateRequest;
+use App\Http\Utilities\MenuUtility;
 use App\Models\Menu;
+use App\Models\MenuItem;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -29,7 +32,11 @@ class MenuController extends Controller
 
     public function edit(Menu $menu)
     {
-        return view('admin.menus.edit', compact('menu'));
+        $menu->load('menu_items', 'menu_items.menu_itemable');
+        $menuItems = MenuUtility::buildMenu($menu->menu_items, null);
+
+//        dd($menuItems);
+        return view('admin.menus.edit', compact('menu', 'menuItems'));
     }
 
     public function update(MenuUpdateRequest $request, Menu $menu)

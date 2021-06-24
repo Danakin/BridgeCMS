@@ -44,4 +44,6 @@
             </form>
         </section>
     </div>
+
+    <livewire:menu.update-menu-items :menuItems="$menuItems"></livewire:menu.update-menu-items>
 @endsection
