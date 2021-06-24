@@ -7,7 +7,9 @@ use App\Http\Requests\Menu\MenuUpdateRequest;
 use App\Http\Utilities\MenuUtility;
 use App\Models\Menu;
 use App\Models\MenuItem;
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -32,7 +34,16 @@ class MenuController extends Controller
 
     public function edit(Menu $menu)
     {
-        $menu->load('menu_items', 'menu_items.menu_itemable');
+        $menu->load(
+            [
+                'menu_items' => function ($query ) {
+                    $query->withCount('menu_items');
+                },
+                'menu_items.menu_itemable' => function (MorphTo $morphTo) {
+                    $morphTo->morphWith([Post::class => ['page']]);
+                },
+            ]
+        );
         $menuItems = MenuUtility::buildMenu($menu->menu_items, null);
 
 //        dd($menuItems);
@@ -46,13 +57,14 @@ class MenuController extends Controller
         return redirect()->route('admin.menus.index')->with('success', "Menu {$menu->title} has been updated.");
     }
 
-    public function destroy(Menu $menu) {
+    public function destroy(Menu $menu)
+    {
         $menuDeleted = $menu->delete();
-        if(!$menuDeleted) {
-            return response()->json(['success' => FALSE], 300);
+        if (!$menuDeleted) {
+            return response()->json(['success' => false], 300);
         }
 
         Session::flash('success', 'Menu ' . $menu->title . ' has been deleted.');
-        return response()->json(['success' => TRUE], 200);
+        return response()->json(['success' => true], 200);
     }
 }

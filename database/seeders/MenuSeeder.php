@@ -15,5 +15,7 @@ class MenuSeeder extends Seeder
     public function run()
     {
         Menu::factory()->create(['title' => 'Primary']);
+        Menu::factory()->create(['title' => 'Secondary']);
+        Menu::factory()->create(['title' => 'Tertiary']);
     }
 }

@@ -27,6 +27,7 @@ class MenuItemFactory extends Factory
             "menu_item_id" => null,
             "title" => $this->faker->title,
             "description" => $this->faker->paragraphs(rand(1, 10), true),
+            "order" => 0,
         ];
     }
 }

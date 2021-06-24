@@ -20,6 +20,7 @@ class CreateMenuItemsTable extends Migration
             $table->unsignedBigInteger('menu_item_id')->nullable();
             $table->string('title')->unique();
             $table->text('description');
+            $table->integer('order');
             $table->timestamps();
 
             $table->foreign('menu_item_id')->references('id')->on('menu_items');

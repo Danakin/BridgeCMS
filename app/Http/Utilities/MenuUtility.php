@@ -19,14 +19,14 @@ class MenuUtility
         $menuItems = [];
         foreach ($activeItems as $item) {
             $route = '#';
-            $item->load('menu_items', 'menu_itemable');
+//            $item->load('menu_items', 'menu_itemable');
             if( $item->menu_itemable_type === Page::class) {
                 $route = route('pages.show', ['page' => $item->menu_itemable]);
             } elseif ($item->menu_itemable_type === Post::class) {
                 $route = route('pages.posts.show', ['page' => $item->menu_itemable->page, 'post' => $item->menu_itemable]);
             }
             $menuItems[$item->id] = ['title' => $item->title, 'route' => $route];
-            if(count($item->menu_items) > 0) {
+            if($item->menu_items_count > 0) {
                 $menuItems[$item->id]['children'] = self::buildMenu($items, $item->id);
             }
         }
