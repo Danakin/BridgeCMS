@@ -20,7 +20,7 @@ class Edit extends Component
         $this->page = $page;
         $this->title = $page->title;
         $this->slug = $page->slug;
-        $this->canHavePosts = $page->can_have_posts;
+        $this->canHavePosts = $page->can_have_posts ? TRUE : null;
         $this->description = $page->description;
         $this->content = $page->content;
     }

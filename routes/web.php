@@ -35,6 +35,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'can:access
     Route::resource('menus', \App\Http\Controllers\MenuController::class);
     Route::resource('menus.items', \App\Http\Controllers\MenuItemController::class);
     Route::resource('pages', Admin\PageController::class);
+    Route::get('pages/{page}/posts', [Admin\PostController::class, 'index'])->name('pages.posts');
+    Route::get('pages/{page}/posts/create', [Admin\PostController::class, 'create'])->name('pages.posts.create');
+    Route::post('pages/{page}/posts', [Admin\PostController::class, 'store'])->name('pages.posts.store');
 });
 
 Route::get('/{page:slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');
