@@ -10,6 +10,9 @@
         <x-menu.item route="{{ route('pages.show', 'blog') }}" title="Blog"></x-menu.item>
         <x-menu.item route="{{ route('pages.show', 'tutorials') }}" title="Tutorials"></x-menu.item>
     </ul>
+    @if (Route::is('pages.*'))
+{{--    {{ $userCount }}--}}
+    @endif
     @auth
     <section class="d-flex flex-col border-t-2 border-white">
         <article class="text-center py-2">{{ auth()->user()->email }}</article>

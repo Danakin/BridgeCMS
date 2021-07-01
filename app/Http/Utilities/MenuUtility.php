@@ -25,7 +25,7 @@ class MenuUtility
             } elseif ($item->menu_itemable_type === Post::class) {
                 $route = route('pages.posts.show', ['page' => $item->menu_itemable->page, 'post' => $item->menu_itemable]);
             }
-            $menuItems[$item->id] = ['title' => $item->title, 'route' => $route];
+            $menuItems[$item->id] = ['title' => $item->title, 'order' => $item->order, 'route' => $route];
             if($item->menu_items_count > 0) {
                 $menuItems[$item->id]['children'] = self::buildMenu($items, $item->id);
             }
