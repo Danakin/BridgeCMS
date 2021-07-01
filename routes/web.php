@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Admin;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,6 +34,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'can:access
     Route::view('/dashboard', 'admin.dashboard')->name('dashboard');
     Route::resource('menus', \App\Http\Controllers\MenuController::class);
     Route::resource('menus.items', \App\Http\Controllers\MenuItemController::class);
+    Route::resource('pages', Admin\PageController::class);
 });
 
 Route::get('/{page:slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');
