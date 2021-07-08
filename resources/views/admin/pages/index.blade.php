@@ -1,24 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-    @if ($errors->any())
-        <div class="border-gray-600 bg-red-700 text-white rounded m-4 p-4">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    @if (session()->has('success'))
-        <div class="border-gray-600 bg-green-700 text-white rounded m-4 p-4">
-            <ul>
-                {{ session()->get('success') }}
-            </ul>
-        </div>
-    @endif
-
     <div class="border-gray-600 bg-white rounded m-4 p-4 flex items-center">
         <article class="w-10/12 px-2 py-1">
             <h2 class="text-2xl font-bold">Manage {{ ucwords(__('Pages')) }}</h2>

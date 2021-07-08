@@ -1,16 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-    @if ($errors->any())
-        <div class="border-gray-600 bg-red-700 text-white rounded m-4 p-4">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <div class="border-gray-600 bg-white rounded m-4 p-4">
         <section class="flex w-full">
             <section id="header" class="flex w-full font-bold">

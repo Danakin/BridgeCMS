@@ -10,7 +10,7 @@ class Create extends Component
 {
     public $title;
     public $slug;
-    public $canHavePosts;
+    public $canHavePosts = FALSE;
     public $description;
     public $content;
 
@@ -18,7 +18,7 @@ class Create extends Component
     {
         $this->title = '';
         $this->slug = '';
-        $this->canHavePosts = false;
+        $this->canHavePosts = FALSE;
         $this->description = '';
         $this->content = '';
     }

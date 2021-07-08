@@ -21,6 +21,9 @@
     <body class="font-sans antialiased bg-coolGray-100">
         @include('layouts.partials.admin_menu')
         <main class="ml-64 p-4 flex flex-col min-h-screen relative">
+            @include('admin.partials.error')
+            @include('admin.partials.success')
+
             @yield('content')
         </main>
 

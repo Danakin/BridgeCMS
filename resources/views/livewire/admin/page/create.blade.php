@@ -5,6 +5,7 @@
     </article>
     <x-admin.form.input name="title">Title</x-admin.form.input>
     <x-admin.form.input name="slug">Slug</x-admin.form.input>
+    {{ $canHavePosts }}
     <x-admin.form.input name="canHavePosts" type="checkbox">Page can have Posts</x-admin.form.input>
 
 

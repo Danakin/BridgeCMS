@@ -83,7 +83,7 @@ class PageController extends Controller
     public function destroy(Page $page)
     {
         $deleteResult = $page->delete();
-        session()->put('success', 'Page ' . $page->title . ' has been deleted');
+        session()->flash('success', 'Page ' . $page->title . ' has been deleted');
         return response()->json([ 'success' => $deleteResult ], 200);
     }
 }
