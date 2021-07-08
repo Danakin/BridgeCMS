@@ -15,7 +15,8 @@ class PageController extends Controller
      */
     public function index()
     {
-        //
+        // pages queried by App\Http\View\Composers\AdminMenuComposer
+        return view('admin.pages.index');
     }
 
     /**
@@ -81,6 +82,8 @@ class PageController extends Controller
      */
     public function destroy(Page $page)
     {
-        //
+        $deleteResult = $page->delete();
+        session()->put('success', 'Page ' . $page->title . ' has been deleted');
+        return response()->json([ 'success' => $deleteResult ], 200);
     }
 }
